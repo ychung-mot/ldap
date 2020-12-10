@@ -49,7 +49,7 @@ objects:
               value: ldapmain/ldapmain.csproj
           from:
             kind: DockerImage
-            name: registry.redhat.io/rhel8/dotnet-50
+            name: registry.access.redhat.com/ubi8/dotnet-50
         type: Source
 
   - apiVersion: v1
