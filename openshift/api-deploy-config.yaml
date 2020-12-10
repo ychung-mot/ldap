@@ -125,7 +125,7 @@ parameters:
     displayName: version
     name: VERSION
     required: true
-    value: "v1.0.0"
+    value: "1.0"
   - description: The ASP Net Core deployment environment setting
     displayName: AspNetCore Environment
     name: ASPNETCORE_ENVIRONMENT
