@@ -1,0 +1,5 @@
+/.vscode
+.vs
+node_modules/
+bceid.json
+chris.json
