@@ -17,42 +17,6 @@ objects:
       lookupPolicy:
         local: false
   - apiVersion: v1
-    kind: BuildConfig
-    metadata:
-      creationTimestamp: null
-      name: ${NAME}${SUFFIX}
-    spec:
-      completionDeadlineSeconds: 600
-      nodeSelector: null
-      output:
-        to:
-          kind: ImageStreamTag
-          name: ${NAME}:${VERSION}
-      resources:
-        limits:
-          cpu: 2
-          memory: 4Gi
-        requests:
-          cpu: 1
-          memory: 2Gi
-      postCommit: {}
-      source:
-        git:
-          uri: ${SOURCE_REPOSITORY_URL}
-          ref: ${SOURCE_REPOSITORY_REF}
-        type: Git
-        contextDir: api
-      strategy:
-        sourceStrategy:
-          env:
-            - name: DOTNET_STARTUP_PROJECT
-              value: ldapmain/ldapmain.csproj
-          from:
-            kind: DockerImage
-            name: registry.access.redhat.com/ubi8/dotnet-50
-        type: Source
-
-  - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       creationTimestamp: null
@@ -112,7 +76,6 @@ objects:
                       key: ldap-port
                 - name: ASPNETCORE_ENVIRONMENT
                   value: ${ASPNETCORE_ENVIRONMENT}
-                      
       test: false
       triggers:
         - imageChangeParams:
@@ -177,4 +140,4 @@ parameters:
     displayName: SOURCE_REPOSITORY_REF
     name: SOURCE_REPOSITORY_REF
     required: false
-    value: ""
+    value: "master"
