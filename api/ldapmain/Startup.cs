@@ -17,16 +17,13 @@ namespace ldapmain
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, ILogger logger)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _logger = logger;
             LdapSearch();
         }
 
         public IConfiguration Configuration { get; }
-
-        private ILogger _logger;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -68,17 +65,19 @@ namespace ldapmain
             var password = Configuration["Password"];
             var ldapPort = Convert.ToInt32(Configuration["LdapPort"]);
 
-            using var conn = new LdapConnection() { SecureSocketLayer = true };
+            using var conn = new LdapConnection() { SecureSocketLayer = false };
             conn.Connect(server, ldapPort);
             conn.Bind(account, password);
 
             var filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=dso))";
-            var search = conn.Search("OU=BCGOV,DC=idir,DC=BCGOV", LdapConnection.ScopeSub, filter, new string[] { "bcgovGUID" }, false);
+            var search = conn.Search("OU=BCGOV,DC=idir,DC=BCGOV", LdapConnection.ScopeSub, filter, new string[] { "bcgovGUID", "sn", "givenname" }, false);
 
             while (search.HasMore())
             {
                 var entry = search.Next();
-                _logger.LogInformation(entry.GetAttribute("bcgovGUID").StringValue);
+                Console.WriteLine(entry.GetAttribute("bcgovGUID").StringValue);
+                Console.WriteLine(entry.GetAttribute("sn").StringValue);
+                Console.WriteLine(entry.GetAttribute("givenname").StringValue);
             }
         }
     }
