@@ -58,6 +58,8 @@ namespace ldapmain
             var password = Configuration["Password"];
             var ldapPort = Convert.ToInt32(Configuration["LdapPort"]);
 
+            Console.WriteLine($"{account}/{password}");
+
             using var conn = new LdapConnection() { SecureSocketLayer = false };
             conn.Connect(server, ldapPort);
             conn.Bind(account, password);
