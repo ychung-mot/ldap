@@ -65,13 +65,11 @@ namespace ldapmain
             var filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=dso))";
             var search = conn.Search("OU=BCGOV,DC=idir,DC=BCGOV", LdapConnection.ScopeSub, filter, new string[] { "bcgovGUID", "sn", "givenname" }, false);
 
-            while (search.HasMore())
-            {
-                var entry = search.Next();
-                Console.WriteLine(entry.GetAttribute("bcgovGUID").StringValue);
-                Console.WriteLine(entry.GetAttribute("sn").StringValue);
-                Console.WriteLine(entry.GetAttribute("givenname").StringValue);
-            }
+            var entry = search.FirstOrDefault();
+
+            Console.WriteLine(entry.GetAttribute("bcgovGUID").StringValue);
+            Console.WriteLine(entry.GetAttribute("sn").StringValue);
+            Console.WriteLine(entry.GetAttribute("givenname").StringValue);
         }
     }
 }
