@@ -58,11 +58,11 @@ namespace ldapmain
             var password = Configuration["Password"];
             var ldapPort = Convert.ToInt32(Configuration["LdapPort"]);
 
-            Console.WriteLine($"{account}/{password}");
+            Console.WriteLine(@$"IDIR\{account}-{password}");
 
             using var conn = new LdapConnection() { SecureSocketLayer = false };
             conn.Connect(server, ldapPort);
-            conn.Bind(account, password);
+            conn.Bind(@$"IDIR\{account}", password);
 
             var filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=dso))";
             var search = conn.Search("OU=BCGOV,DC=idir,DC=BCGOV", LdapConnection.ScopeSub, filter, new string[] { "bcgovGUID", "sn", "givenname" }, false);
